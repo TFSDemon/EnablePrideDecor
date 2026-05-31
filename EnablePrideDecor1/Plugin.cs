@@ -1,6 +1,5 @@
-﻿using BepInEx;
+using BepInEx;
 using System.Collections.Generic;
-using System.Resources;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -23,7 +22,6 @@ namespace EnablePrideDecor
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            
             if (processedScenes.Contains(scene.name))
                 return;
 
@@ -38,7 +36,6 @@ namespace EnablePrideDecor
                 }
             }
 
-           
             if (foundPrideObjects)
             {
                 processedScenes.Add(scene.name);
@@ -48,6 +45,12 @@ namespace EnablePrideDecor
         private void EnableRecursively(Transform parent)
         {
             parent.gameObject.SetActive(true);
+
+            MeshCollider[] meshColliders = parent.GetComponents<MeshCollider>();
+            foreach (MeshCollider collider in meshColliders)
+            {
+                Destroy(collider);
+            }
 
             foreach (Transform child in parent)
             {
